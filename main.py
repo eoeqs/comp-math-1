@@ -17,6 +17,8 @@ def main():
         matrix = get_matrix(choice, dimension, filename)
         print_matrix(matrix)
         iterate_matrix(matrix, accuracy, dimension)
+    except PermissionError:
+        print("\nPermission denied.")
     except EOFError:
         print("\nEnd of stream detected. Exiting..")
     except KeyboardInterrupt:

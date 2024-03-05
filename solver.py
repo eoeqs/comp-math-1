@@ -3,24 +3,10 @@ from printer import *
 
 def check_diagonal(matrix, size):
     for i in range(size):
-        summ = 0
-        for j in range(size):
-            summ += abs(matrix[i][j])
-        if abs(matrix[i][i]) < (summ - abs(matrix[i][i])):
+        row_sum = sum(abs(matrix[i][j]) for j in range(size)) - abs(matrix[i][i])
+        if abs(matrix[i][i]) <= row_sum:
             return False
     return True
-
-
-def possibility_to_get_diagonal(matrix, size):
-    for i in range(size):
-        flag = False
-        summ = sum(abs(i) for i in matrix[i][:size - 1])
-        for j in range(size - 1):
-            if abs(matrix[i][j]) >= summ - (abs(matrix[i][j])):
-                flag = True
-            if not flag:
-                return False
-        return True
 
 
 def print_matrix(matrix):

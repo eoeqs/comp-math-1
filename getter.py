@@ -81,11 +81,17 @@ def get_dimension(choice):
 
 def get_dimension_from_file(filename):
     with open(filename, "r") as file:
-        second_line = file.readlines()[1]
+        lines = file.readlines()
+        if not lines:
+            print("File is empty.")
+        if len(lines) < 2:
+            print("Error: File is too short.")
+            return None
+
         try:
-            dimension = int(second_line)
-            if len(second_line.split()) > 1:
-                raise ValueError("Dimension should be a single integer in the second line of the file.")
+            dimension = int(lines[1])
+            if len(lines) != dimension + 2:  # dimension + 1 for the accuracy, dimension, and 1 for 0-based index
+                raise ValueError("Number of lines in the file does not match the specified dimension.")
             return dimension
         except ValueError:
             print("Error: Invalid format in the second line of the file. Dimension should be a single integer.")
@@ -118,7 +124,6 @@ def get_matrix(choice, dimension, filename=None):
         case "1":
             matrix = get_matrix_from_input(dimension)
         case "2":
-            # filename = get_filename()
             matrix = get_matrix_from_file(filename, dimension)
         case "3":
             matrix = get_random_matrix(dimension)
@@ -142,7 +147,7 @@ def get_matrix_from_input(dimension):
             row = [i for i in input().split()]
             while not validate_matrix(row, dimension):
                 row = [i for i in input().split()]
-            row = [float(i) for i in row]
+            row = [float(i.replace(',', '.')) for i in row]
             matrix.append(row)
         except ValueError:
             print("Matrix should contain numbers only.")
@@ -157,7 +162,7 @@ def get_matrix_from_file(filename, dimension):
             print("File is empty.")
         for i in range(len(lines)):
             try:
-                row = [float(i) for i in lines[i].split()]
+                row = [float(i.replace(',', '.')) for i in lines[i].split()]
                 if validate_matrix(row, dimension):
                     matrix.append(row)
                 else:
